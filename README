@@ -1,0 +1,6 @@
+Simple .pkg deployment script for xcode Mac OS X project
+
+Copy settings.sh.example to settings.sh
+And fix it following comment
+
+Do not forget set location config to legacy
