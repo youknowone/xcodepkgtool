@@ -7,6 +7,10 @@ version=`git describe --tags`
 version=${version#$tagprefix}
 rm build/Release/*.app/Contents/Info.plist
 
+PROJDIR=`pwd`
+cd Pods && xcodebuild -target Pods -configuration "$configuration" # don't think about success
+cd "$PROJDIR"
+
 # i am pooooooooooooooor at bash
 if [ "$codesign" ]; then
 	xcodebuild -target "$target" -configuration "$configuration" &&
