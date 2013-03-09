@@ -5,7 +5,7 @@ cd ..
 
 version=`git describe --tags`
 version=${version#$tagprefix}
-rm build/Release/*.app/Contents/Info.plist
+rm build/"$configuration"/*.app/Contents/Info.plist
 
 PROJDIR=`pwd`
 cd Pods && xcodebuild -target Pods -configuration "$configuration" # don't think about success
