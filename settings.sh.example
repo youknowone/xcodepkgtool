@@ -11,9 +11,9 @@ tagprefix='appstore'
 # Deploy configuration name
 configuration='Release'
 
-# Target name
+# Scheme name
 # If your project have applicaiton target name 'YourApp', set this 'YourApp'
-target='YourTarget'
+scheme='YourTarget'
 
 # Application name
 # If your app name is not same to target name, change this.

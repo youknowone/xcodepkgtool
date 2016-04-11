@@ -1,23 +1,29 @@
 #!/bin/bash
 
-. settings.sh
-cd ..
+dir=`dirname "$0"`
+. "$dir/import_settings.sh"
+PROJDIR="$dir/.."
+
+cd $PROJDIR
 
 version=`git describe --tags`
 version=${version#$tagprefix}
 rm build/"$configuration"/*.app/Contents/Info.plist
 
-PROJDIR=`pwd`
-cd Pods && xcodebuild -target Pods -configuration "$configuration" # don't think about success
-cd "$PROJDIR"
 
-# i am pooooooooooooooor at bash
-if [ "$codesign" ]; then
-	xcodebuild -target "$target" -configuration "$configuration" &&
-	cd "build/$configuration" &&
-	productbuild --component "$appname.app" /Applications --sign "$codesign" "$appname $version.pkg"
-else
-	xcodebuild -target "$target" -configuration "$configuration" &&
-	cd "build/$configuration" &&
-	productbuild --component "$appname.app" /Applications "$appname $version.pkg"
+BUILDOPT="-scheme ${scheme} -configuration ${configuration}"
+if [ "$workspace" ]; then
+    BUILDOPT="-workspace ${workspace} $BUILDOPT"
 fi
+
+PACKAGEOPT="--component ${appname}.app /Applications"
+if [ "$codesign" ]; then
+    xcodebuild $BUILDOPT &&
+    cd "build/$configuration" &&
+    productbuild $PACKAGEOPT --sign ${codesign} "$appname $version.pkg"
+else
+    xcodebuild $BUILDOPT &&
+    cd "build/$configuration" &&
+    productbuild $PACKAGEOPT "$appname $version.pkg"
+fi
+
